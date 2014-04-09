@@ -38,6 +38,13 @@ TodoList.prototype.sort = function() {
   this.update()
 }
 
+TodoList.prototype.delete = function() {
+  this.items = this.items.filter(function(item) {
+    return !item.data.completed
+  })
+  this.update()
+}
+
 // TextBox Model.
 function TextBox(data) {
   TextBox.prototype.new.call(this, data)
@@ -50,7 +57,10 @@ TextBox.prototype.init = function() {
 }
 
 TextBox.prototype.focus = function() {
+  var x = window.scrollX, 
+      y = window.scrollY
   this.element().focus()
+  window.scrollTo(x, y);
 }
 
 TextBox.prototype.add = function(event) {
@@ -83,5 +93,21 @@ SortButton.prototype.templateData = function() {
 
 SortButton.prototype.sort = function(event) {
   APP.todolist.sort()
+  APP.textbox.focus()
+}
+
+// DeleteButton Model.
+function DeleteButton(data) {
+  DeleteButton.prototype.new.call(this, data)
+  this.template = 'deletebutton'
+}
+DeleteButton.prototype = new Model()
+
+DeleteButton.prototype.templateData = function() {
+  return {deletebutton: this}
+}
+
+DeleteButton.prototype.delete = function(event) {
+  APP.todolist.delete()
   APP.textbox.focus()
 }

@@ -1,11 +1,15 @@
+<!DOCTYPE html>
 <html><head>
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="libs/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="libs/bootstrap/css/bootstrap-theme.min.css">
   <!-- The templating system. -->
-  <script src="handlebars.js"></script>
+  <script src="libs/handlebars.js"></script>
   <!-- The framework. -->
   <script src="bee.js"></script>
   <!-- The models and collections for the todo app. -->
   <script src="elements.js"></script>
-  
+
   <title>A TODO app in beejs.js</title>
 </head><body>
 
@@ -19,10 +23,27 @@
 
 <!-- Main template. -->
 <script id="app-template" type="text/x-handlebars-template">
-  {{! Runs the render() method. }}
-  {{{render app.textbox}}}
-  {{{render app.todolist}}}
-  {{{render app.sortbutton}}}
+  <div class="container">
+    <div class="page-header">
+      <h1>Todo List</h1>
+    </div>
+
+    <div class="row"><div class="col-xs-12">
+      <div class="input-group input-group-lg">
+        <span class="input-group-addon">+</span>
+        {{! Runs the render() method. }}
+        {{{render app.textbox}}}
+      </div>
+    </div></div>
+
+    <div class="row"><div class="col-xs-12">
+      {{{render app.todolist}}}
+    </div></div>
+    <div class="row"><div class="col-xs-12">
+      {{{render app.sortbutton}}}
+      {{{render app.deletebutton}}}
+    </div>
+  </div>
 </script>
 
 <!-- Template for the TextBox Model. -->
@@ -30,6 +51,7 @@
   <input
     {{! Binds the textbox to this dom element. }}
     {{{id textbox}}}
+    class="form-control"
     {{! Binds the keydown event to the add method of the textbox. }}
     {{{event textbox "keydown" "add"}}}
     type="text"
@@ -39,33 +61,38 @@
 
 <!--Template for the TodoList Collection. -->
 <script id="todolist-template" type="text/x-handlebars-template">
-  <ul {{{id todolist}}}>
-    {{#for todolist.items as="item"}}
-      {{{render item}}}
-    {{/for}}
-  </ul>
+    <table {{{id todolist}}} class="table table-striped">
+      {{#for todolist.items as="item"}}
+        {{{render item}}}
+      {{/for}}
+    </table>
 </script>
 
 <!-- Template for the Item Model. -->
 <script id="item-template" type="text/x-handlebars-template">
-  <li {{{id item}}}>
-    <span{{#if item.data.completed}} class="completed"{{/if}}>
+  <tr {{{id item}}}>
+    <td class="col-xs-1">
+      <input
+        {{{id item name="checkbox"}}}
+        {{! Binds the click event to the input with subname "checkbox". }}
+        {{{event item "click" "complete" for="checkbox"}}}
+        type="checkbox"
+        {{#if item.data.completed}}checked="checked"{{/if}}
+      />
+    </td>
+    <td{{#if item.data.completed}} class="completed"{{/if}}>
       {{item.data.title}}
-    </span>
-    <input
-      {{{id item name="checkbox"}}}
-      {{! Binds the click event to the input with subname "checkbox". }}
-      {{{event item "click" "complete" for="checkbox"}}}
-      type="checkbox"
-      {{#if item.data.completed}}checked="checked"{{/if}}
-    />
-    <input
-      {{{id item name="delete"}}}
-      {{{event item "click" "delete" for="delete"}}}
-      type="button"
-      value="✂"
-    />
-  </li>
+    </td>
+    <td class="col-xs-1">
+      <span
+        {{{id item name="delete"}}}
+        {{{event item "click" "delete" for="delete"}}}
+        class="glyphicon glyphicon-remove"
+        type="button"
+        value="✂"
+      /></span>
+    </td>
+  </tr>
 </script>
 
 <!-- Template for the SortButton Model. -->
@@ -73,8 +100,19 @@
   <input 
     {{{id sortbutton}}}
     {{{event sortbutton "click" "sort"}}}
+    class="btn btn-primary"
     type="button"
     value="Sort"
+  />
+</script>
+
+<script id="deletebutton-template" type="text/x-handlebars-template">
+  <input 
+    {{{id deletebutton}}}
+    {{{event deletebutton "click" "delete"}}}
+    class="btn btn-danger"
+    type="button"
+    value="Clean"
   />
 </script>
 
@@ -86,6 +124,7 @@ APP.todolist.items.push(new Item({title: 'Buy milk', completed: false}))
 APP.todolist.items.push(new Item({title: 'Drink milk', completed: false}))
 APP.textbox = new TextBox()
 APP.sortbutton = new SortButton()
+APP.deletebutton = new DeleteButton()
 
 // Render and display the main template.
 start_app({
