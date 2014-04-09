@@ -14,12 +14,9 @@
 </head><body>
 
 <style>
-  .completed {
-    text-decoration: line-through
-  }
-  #footer {
-    margin-top: 40px;
-  }
+  .completed { text-decoration: line-through; }
+  #footer { margin-top: 40px; }
+  .td-narrow { width: 20px; }
 </style>
 
 <div id="app"></div>
@@ -85,7 +82,7 @@
 <!-- Template for the Item Model. -->
 <script id="item-template" type="text/x-handlebars-template">
   <tr {{{id item}}}>
-    <td class="col-xs-1">
+    <td class="td-narrow">
       <input
         {{{id item name="checkbox"}}}
         {{! Binds the click event to the input with subname "checkbox". }}
@@ -97,7 +94,7 @@
     <td{{#if item.data.completed}} class="completed"{{/if}}>
       {{item.data.title}}
     </td>
-    <td class="col-xs-1">
+    <td class="td-narrow">
       <span
         {{{id item name="delete"}}}
         {{{event item "click" "delete" for="delete"}}}
