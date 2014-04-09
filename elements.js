@@ -6,7 +6,7 @@ function Item(data) {
 Item.prototype = new Model()
 
 Item.prototype.templateData = function() {
-  return this.data
+  return {item: this}
 }
 
 Item.prototype.complete = function(event) {
