@@ -40,7 +40,7 @@ TodoList.prototype.sort = function() {
   this.update()
 }
 
-TodoList.prototype.delete = function() {
+TodoList.prototype.clean = function() {
   this.items = this.items.filter(function(item) {
     return !item.data.completed
   })
@@ -110,6 +110,6 @@ CleanButton.prototype.templateData = function() {
 }
 
 CleanButton.prototype.delete = function(event) {
-  APP.todolist.delete()
+  APP.todolist.clean()
   APP.textbox.focus()
 }
