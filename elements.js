@@ -38,6 +38,7 @@ TodoList.prototype.sort = function() {
     else return a.data.completed ? -1 : 1
   })
   this.update()
+  APP.textbox.focus()
 }
 
 TodoList.prototype.clean = function() {
@@ -45,6 +46,7 @@ TodoList.prototype.clean = function() {
     return !item.data.completed
   })
   this.update()
+  APP.textbox.focus()
 }
 
 // TextBox Model.
@@ -80,36 +82,4 @@ TextBox.prototype.add = function(event) {
 
 TextBox.prototype.templateData = function() {
   return {textbox: this}
-}
-
-// SortButton Model.
-function SortButton(data) {
-  SortButton.prototype.new.call(this, data)
-  this.template = 'sort-button'
-}
-SortButton.prototype = new Model()
-
-SortButton.prototype.templateData = function() {
-  return {sort_button: this}
-}
-
-SortButton.prototype.sort = function(event) {
-  APP.todolist.sort()
-  APP.textbox.focus()
-}
-
-// DeleteButton Model.
-function CleanButton(data) {
-  CleanButton.prototype.new.call(this, data)
-  this.template = 'clean-button'
-}
-CleanButton.prototype = new Model()
-
-CleanButton.prototype.templateData = function() {
-  return {clean_button: this}
-}
-
-CleanButton.prototype.clean = function(event) {
-  APP.todolist.clean()
-  APP.textbox.focus()
 }

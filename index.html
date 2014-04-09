@@ -41,8 +41,20 @@
     </div></div>
 
     <div class="row"><div class="col-xs-12">
-      {{{render app.sort_button}}}
-      {{{render app.clean_button}}}
+      <input 
+        {{{id app.todolist name="sort"}}}
+        {{{event app.todolist "click" "sort" for="sort"}}}
+        class="btn btn-primary"
+        type="button"
+        value="Sort"
+      />
+      <input 
+        {{{id app.todolist name="clean"}}}
+        {{{event app.todolist "click" "clean" for="clean"}}}
+        class="btn btn-danger"
+        type="button"
+        value="Clean"
+      />
     </div>
 
     <div id="footer">
@@ -104,35 +116,11 @@
   </tr>
 </script>
 
-<!-- Template for the SortButton Model. -->
-<script id="sort-button-template" type="text/x-handlebars-template">
-  <input 
-    {{{id sort_button}}}
-    {{{event sort_button "click" "sort"}}}
-    class="btn btn-primary"
-    type="button"
-    value="Sort"
-  />
-</script>
-
-<!-- Template for the CleanButton Model. -->
-<script id="clean-button-template" type="text/x-handlebars-template">
-  <input 
-    {{{id clean_button}}}
-    {{{event clean_button "click" "clean"}}}
-    class="btn btn-danger"
-    type="button"
-    value="Clean"
-  />
-</script>
-
 <script>
 // Initialize the app elements.
 var APP = {}
 APP.todolist = new TodoList()
 APP.textbox = new TextBox()
-APP.sort_button = new SortButton()
-APP.clean_button = new CleanButton()
 
 // Render and display the main template.
 start_app({
