@@ -90,7 +90,7 @@ function SortButton(data) {
 SortButton.prototype = new Model()
 
 SortButton.prototype.templateData = function() {
-  return {sortbutton: this}
+  return {sort_button: this}
 }
 
 SortButton.prototype.sort = function(event) {
