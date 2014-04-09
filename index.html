@@ -1,7 +1,9 @@
 <html><head>
-  <script src="jquery-1.11.0.min.js"></script>
+  <!-- The templating system. -->
   <script src="handlebars.js"></script>
+  <!-- The framework. -->
   <script src="bee.js"></script>
+  <!-- The models and collections for the todo app. -->
   <script src="elements.js"></script>
   <title>A TODO app in beejs.js</title>
 </head><body>
@@ -18,7 +20,7 @@
 <script id="app-template" type="text/x-handlebars-template">
   {{! Runs the render() method. }}
   {{{render app.textbox}}}
-  {{{render app.list}}}
+  {{{render app.todolist}}}
   {{{render app.sortbutton}}}
 </script>
 
@@ -34,19 +36,17 @@
   />
 </script>
 
-<!--
-  Template for the TodoList Collection.
--->
-<script id="list-template" type="text/x-handlebars-template">
-  <ul {{{id list}}}>
-    {{#for list.items as="item"}}
+<!--Template for the TodoList Collection. -->
+<script id="todolist-template" type="text/x-handlebars-template">
+  <ul {{{id todolist}}}>
+    {{#for todolist.items as="item"}}
       {{{render item}}}
     {{/for}}
   </ul>
 </script>
 
 <!-- Template for the Item Model. -->
-<script id="list-item-template" type="text/x-handlebars-template">
+<script id="item-template" type="text/x-handlebars-template">
   <li {{{id item}}}>
     <span{{#if item.data.completed}} class="completed"{{/if}}>
       {{item.data.title}}
@@ -71,28 +71,27 @@
 <script id="sortbutton-template" type="text/x-handlebars-template">
   <input 
     {{{id sortbutton}}}
-    {{{event sortbutton "click" "click"}}}
+    {{{event sortbutton "click" "sort"}}}
     type="button"
     value="Sort"
   />
 </script>
 
 <script>
-
 // Initialize the app elements.
 var APP = {}
-APP.list = new TodoList()
-APP.list.items.push(new Item({title: 'Buy milk', completed: false}))
-APP.list.items.push(new Item({title: 'Drink milk', completed: false}))
+APP.todolist = new TodoList()
+APP.todolist.items.push(new Item({title: 'Buy milk', completed: false}))
+APP.todolist.items.push(new Item({title: 'Drink milk', completed: false}))
 APP.textbox = new TextBox()
 APP.sortbutton = new SortButton()
 
 // Render and display the main template.
-$('#app').html(render('app', {
-  app: APP,
-}))
-processQue()
-
+start_app({
+  'elementId': 'app',
+  'template': 'app',
+  'templateData': {app: APP},
+})
 </script>
 
 </body></html>

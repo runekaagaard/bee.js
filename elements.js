@@ -1,7 +1,7 @@
 // Item Model.
-Item = function(data) {
+function Item(data) {
   Item.prototype.new.call(this, data)
-  this.template = 'list-item'
+  this.template = 'item'
 }
 Item.prototype = new Model()
 
@@ -16,18 +16,18 @@ Item.prototype.complete = function(event) {
 }
 
 Item.prototype.delete = function(event) {
-  APP.list.remove(this)
+  APP.todolist.remove(this)
   APP.textbox.focus()
 }
 
 // Todo Collection.
-TodoList = function() {
-  this.template = 'list'
+function TodoList() {
+  this.template = 'todolist'
 }
 TodoList.prototype = new Collection()
 
 TodoList.prototype.templateData = function() {
-  return {list: this}
+  return {todolist: this}
 }
 
 TodoList.prototype.sort = function() {
@@ -39,7 +39,7 @@ TodoList.prototype.sort = function() {
 }
 
 // TextBox Model.
-TextBox = function(data) {
+function TextBox(data) {
   TextBox.prototype.new.call(this, data)
   this.template = 'textbox'
 }
@@ -50,16 +50,16 @@ TextBox.prototype.init = function() {
 }
 
 TextBox.prototype.focus = function() {
-  $(this.element()).focus()
+  this.element().focus()
 }
 
 TextBox.prototype.add = function(event) {
   if(event.keyCode !== 13) return
-  var title = $(this.element()).val()
+  var title = this.element().value
   if (title.trim() === "") {
     return
   }
-  APP.list.add(new Item({
+  APP.todolist.add(new Item({
     title: title,
     completed: false,
   }))
@@ -71,7 +71,7 @@ TextBox.prototype.templateData = function() {
 }
 
 // SortButton Model.
-SortButton = function(data) {
+function SortButton(data) {
   SortButton.prototype.new.call(this, data)
   this.template = 'sortbutton'
 }
@@ -81,7 +81,7 @@ SortButton.prototype.templateData = function() {
   return {sortbutton: this}
 }
 
-SortButton.prototype.click = function(event) {
-  APP.list.sort()
+SortButton.prototype.sort = function(event) {
+  APP.todolist.sort()
   APP.textbox.focus()
 }

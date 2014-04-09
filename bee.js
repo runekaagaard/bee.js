@@ -1,3 +1,4 @@
+// Element.
 function Element() {}
 
 var IDS = 0
@@ -18,6 +19,7 @@ Element.prototype.update = function() {
   processQue()
 }
 
+// Model.
 function Model(data) {
     this.new(data)
     this.template = null
@@ -29,6 +31,7 @@ Model.prototype.new = function(data) {
   this.data = data
 }
 
+// Collection.
 function Collection() {
     Element.prototype.new.call(this)
     this.items = []
@@ -45,8 +48,9 @@ Collection.prototype.remove = function(item) {
   this.update()
 }
 
+// Helper functions.
 function render(name, data) {
-  var source   = $("#" + name + "-template").html()
+  var source = document.getElementById(name + "-template").textContent
   var template = Handlebars.compile(source)
   var html = template(data)
   return html
@@ -61,6 +65,13 @@ function processQue() {
   }
 }
 
+function start_app(data) {
+  document.getElementById(data.elementId).innerHTML = render(data.template, 
+                                                             data.templateData)
+  processQue() 
+}
+
+// Handlebars helpers.
 Handlebars.registerHelper('for', function(items, options) {
   var ret = ""
   for(var i=0, j=items.length; i<j; i++) {
@@ -72,7 +83,7 @@ Handlebars.registerHelper('for', function(items, options) {
 })
 
 Handlebars.registerHelper('render', function(item) {
-  return render(item.template, item.templateData())
+  return item.render()
 })
 
 Handlebars.registerHelper('event', function(obj, eventName, callbackName, extra) {
@@ -83,9 +94,9 @@ Handlebars.registerHelper('event', function(obj, eventName, callbackName, extra)
   QUE.push([
     [obj, eventName, callbackName, id], 
     function(obj, eventName, callbackName, id) {
-      $('#'+id).on(eventName, function(event) {
+      document.getElementById(id).addEventListener(eventName, function(event) {
         obj[callbackName](event)
-      })
+      }, false)
     }
   ])
 })
