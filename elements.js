@@ -1,3 +1,5 @@
+// APP is global state from index.html.
+
 // Item Model.
 function Item(data) {
   Item.prototype.new.call(this, data)
@@ -83,7 +85,7 @@ TextBox.prototype.templateData = function() {
 // SortButton Model.
 function SortButton(data) {
   SortButton.prototype.new.call(this, data)
-  this.template = 'sortbutton'
+  this.template = 'sort-button'
 }
 SortButton.prototype = new Model()
 
@@ -97,17 +99,17 @@ SortButton.prototype.sort = function(event) {
 }
 
 // DeleteButton Model.
-function DeleteButton(data) {
-  DeleteButton.prototype.new.call(this, data)
-  this.template = 'deletebutton'
+function CleanButton(data) {
+  CleanButton.prototype.new.call(this, data)
+  this.template = 'clean-button'
 }
-DeleteButton.prototype = new Model()
+CleanButton.prototype = new Model()
 
-DeleteButton.prototype.templateData = function() {
+CleanButton.prototype.templateData = function() {
   return {deletebutton: this}
 }
 
-DeleteButton.prototype.delete = function(event) {
+CleanButton.prototype.delete = function(event) {
   APP.todolist.delete()
   APP.textbox.focus()
 }

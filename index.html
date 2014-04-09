@@ -39,9 +39,10 @@
     <div class="row"><div class="col-xs-12">
       {{{render app.todolist}}}
     </div></div>
+
     <div class="row"><div class="col-xs-12">
-      {{{render app.sortbutton}}}
-      {{{render app.deletebutton}}}
+      {{{render app.sort_button}}}
+      {{{render app.clean_button}}}
     </div>
   </div>
 </script>
@@ -61,11 +62,11 @@
 
 <!--Template for the TodoList Collection. -->
 <script id="todolist-template" type="text/x-handlebars-template">
-    <table {{{id todolist}}} class="table table-striped">
-      {{#for todolist.items as="item"}}
-        {{{render item}}}
-      {{/for}}
-    </table>
+  <table {{{id todolist}}} class="table table-striped">
+    {{#for todolist.items as="item"}}
+      {{{render item}}}
+    {{/for}}
+  </table>
 </script>
 
 <!-- Template for the Item Model. -->
@@ -96,7 +97,7 @@
 </script>
 
 <!-- Template for the SortButton Model. -->
-<script id="sortbutton-template" type="text/x-handlebars-template">
+<script id="sort-button-template" type="text/x-handlebars-template">
   <input 
     {{{id sortbutton}}}
     {{{event sortbutton "click" "sort"}}}
@@ -106,7 +107,7 @@
   />
 </script>
 
-<script id="deletebutton-template" type="text/x-handlebars-template">
+<script id="clean-button-template" type="text/x-handlebars-template">
   <input 
     {{{id deletebutton}}}
     {{{event deletebutton "click" "delete"}}}
@@ -120,11 +121,9 @@
 // Initialize the app elements.
 var APP = {}
 APP.todolist = new TodoList()
-APP.todolist.items.push(new Item({title: 'Buy milk', completed: false}))
-APP.todolist.items.push(new Item({title: 'Drink milk', completed: false}))
 APP.textbox = new TextBox()
-APP.sortbutton = new SortButton()
-APP.deletebutton = new DeleteButton()
+APP.sort_button = new SortButton()
+APP.clean_button = new CleanButton()
 
 // Render and display the main template.
 start_app({
