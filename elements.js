@@ -106,7 +106,7 @@ function CleanButton(data) {
 CleanButton.prototype = new Model()
 
 CleanButton.prototype.templateData = function() {
-  return {deletebutton: this}
+  return {clean_button: this}
 }
 
 CleanButton.prototype.delete = function(event) {
