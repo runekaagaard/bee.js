@@ -1,0 +1,98 @@
+<html><head>
+  <script src="jquery-1.11.0.min.js"></script>
+  <script src="handlebars.js"></script>
+  <script src="bee.js"></script>
+  <script src="elements.js"></script>
+  <title>A TODO app in beejs.js</title>
+</head><body>
+
+<style>
+  .completed {
+    text-decoration: line-through
+  }
+</style>
+
+<div id="app"></div>
+
+<!-- Main template. -->
+<script id="app-template" type="text/x-handlebars-template">
+  {{! Runs the render() method. }}
+  {{{render app.textbox}}}
+  {{{render app.list}}}
+  {{{render app.sortbutton}}}
+</script>
+
+<!-- Template for the TextBox Model. -->
+<script id="textbox-template" type="text/x-handlebars-template">
+  <input
+    {{! Binds the textbox to this dom element. }}
+    {{{id textbox}}}
+    {{! Binds the keydown event to the add method of the textbox. }}
+    {{{event textbox "keydown" "add"}}}
+    type="text"
+    placeholder="Write + Enter"
+  />
+</script>
+
+<!--
+  Template for the TodoList Collection.
+-->
+<script id="list-template" type="text/x-handlebars-template">
+  <ul {{{id list}}}>
+    {{#for list.items as="item"}}
+      {{{render item}}}
+    {{/for}}
+  </ul>
+</script>
+
+<!-- Template for the Item Model. -->
+<script id="list-item-template" type="text/x-handlebars-template">
+  <li {{{id item}}}>
+    <span{{#if item.data.completed}} class="completed"{{/if}}>
+      {{item.data.title}}
+    </span>
+    <input
+      {{{id item name="checkbox"}}}
+      {{! Binds the click event to the input with subname "checkbox". }}
+      {{{event item "click" "complete" for="checkbox"}}}
+      type="checkbox"
+      {{#if item.data.completed}}checked="checked"{{/if}}
+    />
+    <input
+      {{{id item name="delete"}}}
+      {{{event item "click" "delete" for="delete"}}}
+      type="button"
+      value="✂"
+    />
+  </li>
+</script>
+
+<!-- Template for the SortButton Model. -->
+<script id="sortbutton-template" type="text/x-handlebars-template">
+  <input 
+    {{{id sortbutton}}}
+    {{{event sortbutton "click" "click"}}}
+    type="button"
+    value="Sort"
+  />
+</script>
+
+<script>
+
+// Initialize the app elements.
+var APP = {}
+APP.list = new TodoList()
+APP.list.items.push(new Item({title: 'Buy milk', completed: false}))
+APP.list.items.push(new Item({title: 'Drink milk', completed: false}))
+APP.textbox = new TextBox()
+APP.sortbutton = new SortButton()
+
+// Render and display the main template.
+$('#app').html(render('app', {
+  app: APP,
+}))
+processQue()
+
+</script>
+
+</body></html>
