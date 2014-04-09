@@ -109,7 +109,7 @@ CleanButton.prototype.templateData = function() {
   return {clean_button: this}
 }
 
-CleanButton.prototype.delete = function(event) {
+CleanButton.prototype.clean = function(event) {
   APP.todolist.clean()
   APP.textbox.focus()
 }
