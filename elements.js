@@ -15,6 +15,7 @@ Item.prototype.complete = function(event) {
   this.data.completed = !this.data.completed
   this.update()
   APP.textbox.focus()
+  APP.todolist.saveLocal()
 }
 
 Item.prototype.delete = function(event) {
@@ -25,6 +26,7 @@ Item.prototype.delete = function(event) {
 // Todo Collection.
 function TodoList() {
   this.template = 'todolist'
+  this.loadLocal()
 }
 TodoList.prototype = new Collection()
 
@@ -39,6 +41,7 @@ TodoList.prototype.sort = function() {
   })
   this.update()
   APP.textbox.focus()
+  this.saveLocal()
 }
 
 TodoList.prototype.clean = function() {
@@ -47,7 +50,38 @@ TodoList.prototype.clean = function() {
   })
   this.update()
   APP.textbox.focus()
+  this.saveLocal()
 }
+
+TodoList.prototype.add = function(item) {
+  Collection.prototype.add.call(this, item)
+  this.saveLocal()
+}
+
+TodoList.prototype.remove = function(item) {
+  Collection.prototype.remove.call(this, item)
+  this.saveLocal()
+}
+
+TodoList.prototype.saveLocal = function(item) {
+  var data = Array.prototype.map.call(this.items, function(item) {
+    return [item.data.title, item.data.completed]
+  })
+  localStorage.setItem('items', JSON.stringify(data))
+}
+
+TodoList.prototype.loadLocal = function(item) {
+  var items = JSON.parse(localStorage.getItem('items'))
+  if (items === null) return
+  for(var i=0, j=items.length; i<j; i++) {
+    var item = items[i]
+    TodoList.prototype.items.push(new Item({
+      title: item[0],
+      completed: item[1],
+    }))
+  }
+}
+
 
 // TextBox Model.
 function TextBox(data) {
