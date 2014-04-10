@@ -67,11 +67,11 @@ TodoList.prototype.saveLocal = function(item) {
   var data = Array.prototype.map.call(this.items, function(item) {
     return [item.data.title, item.data.completed]
   })
-  localStorage.setItem('items', JSON.stringify(data))
+  localStorage.setItem('bee_todo_items', JSON.stringify(data))
 }
 
 TodoList.prototype.loadLocal = function(item) {
-  var items = JSON.parse(localStorage.getItem('items'))
+  var items = JSON.parse(localStorage.getItem('bee_todo_items'))
   if (items === null) return
   for(var i=0, j=items.length; i<j; i++) {
     var item = items[i]
