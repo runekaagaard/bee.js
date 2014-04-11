@@ -75,13 +75,12 @@ TodoList.prototype.loadLocal = function(item) {
   if (items === null) return
   for(var i=0, j=items.length; i<j; i++) {
     var item = items[i]
-    TodoList.prototype.items.push(new Item({
+    this.items.push(new Item({
       title: item[0],
       completed: item[1],
     }))
   }
 }
-
 
 // TextBox Model.
 function TextBox(data) {
@@ -98,7 +97,7 @@ TextBox.prototype.focus = function() {
   var x = window.scrollX, 
       y = window.scrollY
   this.element().focus()
-  window.scrollTo(x, y);
+  window.scrollTo(x, y)
 }
 
 TextBox.prototype.add = function(event) {

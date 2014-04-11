@@ -75,7 +75,7 @@ function start_app(data) {
 Handlebars.registerHelper('for', function(items, options) {
   var ret = ""
   for(var i=0, j=items.length; i<j; i++) {
-    data = {}
+    var data = {}
     data[options.hash.as] = items[i]
     ret = ret + options.fn(data)
   }
@@ -87,7 +87,7 @@ Handlebars.registerHelper('render', function(item) {
 })
 
 Handlebars.registerHelper('event', function(obj, event, callback, extra) {
-  id = obj.id
+  var id = obj.id
   if ('for' in extra.hash) {
     id += extra.hash.for
   }
